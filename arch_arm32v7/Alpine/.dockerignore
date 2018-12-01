@@ -1,0 +1,3 @@
+# file to ignore several types when buildiung.. 
+*.md
+!README.md
