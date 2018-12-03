@@ -16,7 +16,8 @@ RUN wget -O /tmp/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-relea
 
 RUN mkdir /tmp/grafana && tar xfvz /tmp/grafana.tar.gz --strip-components=1 -C /tmp/grafana
 
-FROM arm32v7/debian:stretch-slim
+ARG VERSION=arm32v7
+FROM echteler/debian:${VERSION}
 
 ARG GF_UID="472"
 ARG GF_GID="472"

@@ -1,6 +1,7 @@
 #Create alpine base image on Pi and upload to Dockerhub. 
 #Move Containers on that image....
 
+#upload alpine base image to registry
 
 
 Create Compose File  
