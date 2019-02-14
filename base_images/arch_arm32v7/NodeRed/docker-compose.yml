@@ -1,0 +1,20 @@
+version: "3"
+services:
+  #Webserver as Entry Point
+  NodeRed:
+    image: echteler/nodered:testing
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    #volumes: 
+    #  - /PeDev/DockerEnvironment/Dev/arch_arm32v7/NodeRed/data:/data
+    networks:
+      - edge 
+  
+  
+
+
+#Create internal link network for Containers
+networks:
+  edge:
+

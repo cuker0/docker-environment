@@ -1,0 +1,63 @@
+ARG NODE_VERSION=x86_64
+
+FROM echteler/node:${NODE_VERSION}
+
+LABEL maintainer "Philipp Echteler"
+LABEL Version "1.0"
+LABEL TAG "NodeRed with git"
+LABEL Architecture "x86_64"
+
+#Install git to use NodeRed Projects feature
+RUN apk add --no-cache openssl
+RUN apk add --no-cache git
+
+# Home directory for Node-RED application source code.
+RUN mkdir -p /usr/src/node-red
+
+# User data directory, contains flows, config and nodes.
+RUN mkdir /data
+
+# Make Assets directory
+RUN mkdir /usr/src/app
+RUN mkdir /usr/src/app/assets
+RUN mkdir /usr/src/app/styling
+
+
+#copy assets into directory
+COPY assets/Balluff_Logo.png /usr/src/app/assets
+COPY assets/favicon.ico /usr/src/app/assets
+COPY assets/thumb_iol.jpg /usr/src/app/assets
+COPY styling/bfstyle.css /usr/src/app/styling
+
+#copy settings.js file to /data directory
+COPY config/settings.js /data
+
+#copy flow filefrom local dir to host to /data
+COPY /flows/flows.json /data
+
+#change the Workdir. 
+WORKDIR /usr/src/node-red
+
+# Add node-red user so we aren't running as root.
+RUN adduser -h /usr/src/node-red -D -H node-red \
+    && chown -R node-red:node-red /data \
+    && chown -R node-red:node-red /usr/src/node-red \
+    && chown -R node-red:node-red /usr/src/app/assets
+    
+USER node-red
+
+# package.json contains Node-RED NPM module and node dependencies
+COPY package.json /usr/src/node-red/
+RUN npm install
+
+# User configuration directory volume
+VOLUME /data
+
+#ports to use with docker
+EXPOSE 1880
+
+# Environment variable holding file path for flows configuration
+ENV FLOWS=flows.json
+ENV NODE_PATH=/usr/src/node-red/node_modules:/data/node_modules
+
+CMD ["npm", "start", "--", "--userDir", "/data"]

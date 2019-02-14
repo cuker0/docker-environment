@@ -1,0 +1,92 @@
+[
+    {
+        "id": "dd72e412.8419d",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "8dae55ac.419088",
+        "type": "http request",
+        "z": "dd72e412.8419d",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "13e22f0c.67dfc1"
+            ]
+        ]
+    },
+    {
+        "id": "4a910760.2e38e",
+        "type": "inject",
+        "z": "dd72e412.8419d",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 160,
+        "y": 220,
+        "wires": [
+            [
+                "43aae669.5af78"
+            ]
+        ]
+    },
+    {
+        "id": "db2783d1.5b5bc",
+        "type": "debug",
+        "z": "dd72e412.8419d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 600,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "43aae669.5af78",
+        "type": "function",
+        "z": "dd72e412.8419d",
+        "name": "",
+        "func": "msg.apiKey = \"\";\nmsg.origin = \"48.681072,9.275974\";\nmsg.destination = \"48.742512,9.313682\";\nmsg.url = \"https://maps.googleapis.com/maps/api/directions/json?origin=\" + msg.origin + \"&destination=\" + msg.destination + \"&key=\" + msg.apiKey;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 100,
+        "wires": [
+            [
+                "8dae55ac.419088"
+            ]
+        ]
+    },
+    {
+        "id": "13e22f0c.67dfc1",
+        "type": "function",
+        "z": "dd72e412.8419d",
+        "name": "",
+        "func": "msg.distance = msg.payload.routes[0].legs[0].distance.text;\nmsg.duration = msg.payload.routes[0].legs[0].duration.text;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "db2783d1.5b5bc"
+            ]
+        ]
+    }
+]
