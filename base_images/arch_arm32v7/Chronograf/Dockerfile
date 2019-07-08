@@ -10,7 +10,7 @@ RUN echo 'hosts: files dns' >> /etc/nsswitch.conf
 RUN apk add --no-cache ca-certificates && \
     update-ca-certificates
 
-ENV CHRONOGRAF_VERSION 1.7.8
+ENV CHRONOGRAF_VERSION 1.7.9
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps wget gnupg tar && \
@@ -24,7 +24,8 @@ RUN set -ex && \
     #wget --no-verbose https://dl.influxdata.com/chronograf/releases/chronograf-${CHRONOGRAF_VERSION}-static_linux_amd64.tar.gz.asc && \
     #wget --no-verbose https://dl.influxdata.com/chronograf/releases/chronograf-${CHRONOGRAF_VERSION}-static_linux_amd64.tar.gz && \
     wget --no-verbose https://dl.influxdata.com/chronograf/releases/chronograf-${CHRONOGRAF_VERSION}_linux_armhf.tar.gz && \
-    #gpg --batch --verify chronograf-${CHRONOGRAF_VERSION}-static_linux_amd64.tar.gz.asc chronograf-${CHRONOGRAF_VERSION}-static_linux_amd64.tar.gz && \
+    #wget --no-verbose https://dl.influxdata.com/chronograf/releases/chronograf-${CHRONOGRAF_VERSION}_linux_armhf.tar.gz.asc && \
+    #gpg --batch --verify chronograf-${CHRONOGRAF_VERSION}_linux_amd64.tar.gz.asc chronograf-${CHRONOGRAF_VERSION}_linux_amd64.tar.gz && \
     mkdir -p /usr/src && \
     #mkdir -p /usr/share/chronograf && \
     tar -C /usr/src -xzf chronograf-${CHRONOGRAF_VERSION}_linux_armhf.tar.gz && \

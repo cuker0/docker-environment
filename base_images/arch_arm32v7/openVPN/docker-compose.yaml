@@ -1,0 +1,13 @@
+version: '2'
+services:
+  openvpn:
+    cap_add:
+     - NET_ADMIN
+     - NET_RAW
+    image: echteler/openvpn:arm32v7
+    container_name: openvpn
+    ports:
+     - "1194:1194/udp"
+    restart: always
+    volumes:
+     - ./openvpn-data/conf:/etc/openvpn

@@ -25,7 +25,7 @@ RUN set -ex && \
     #                  https://dl.influxdata.com/kapacitor/releases/kapacitor-1.5.1_linux_armhf.tar.gz
     #wget --no-verbose https://dl.influxdata.com/kapacitor/releases/kapacitor-${KAPACITOR_VERSION}-static_linux_armhf.tar.gz.asc && \
     wget --no-verbose https://dl.influxdata.com/kapacitor/releases/kapacitor-${KAPACITOR_VERSION}_linux_armhf.tar.gz && \
-    #gpg --batch --verify kapacitor-${KAPACITOR_VERSION}_linux_armhf.tar.gz && \
+    # gpg --batch --verify kapacitor-${KAPACITOR_VERSION}_linux_armhf.tar.gz && \
     mkdir -p /usr/src && \
     tar -C /usr/src -xvzf kapacitor-${KAPACITOR_VERSION}_linux_armhf.tar.gz && \
     rm -f /usr/src/kapacitor-*/kapacitor.conf && \

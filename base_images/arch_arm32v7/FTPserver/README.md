@@ -1,17 +1,20 @@
-#Source: 
-https://hub.docker.com/r/gists/pure-ftpd/
-https://download.pureftpd.org/pub/pure-ftpd/doc/README
 
-#command to build the container: 
+# Source':'
+
+<https://hub.docker.com/r/gists/pure-ftpd/>
+<https://download.pureftpd.org/pub/pure-ftpd/doc/README>
+
+# command to build the container':'
+
 docker build -t echteler/ftpserver:arm32v7 --rm .
 
-#command to run the container: 
+# command to run the container':'
+
 docker run -d -p21:21 -p30000-30009:30000-30009 --name ftpserver -e DEFAULT_USR=balluff -e DEFAULT_PWD=balluff echteler/ftpserver:arm32v7
 
-#Username for FTP access
+# Username for FTP access
 
-#Password for FTP access
-
+# Password for FTP access
 
 docker run \
         -d \

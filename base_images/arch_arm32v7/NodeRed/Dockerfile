@@ -7,10 +7,11 @@ LABEL Version "1.0"
 LABEL TAG "NodeRed with git"
 LABEL Architecture "ARM32V7"
 
-
 #Install git to use NodeRed Projects feature
 RUN apk add --no-cache openssl
 RUN apk add --no-cache git
+RUN apk add --no-cache samba
+# RUN apk add --no-cache python
 
 # Home directory for Node-RED application source code.
 RUN mkdir -p /usr/src/node-red
@@ -54,7 +55,7 @@ USER node-red
 
 # package.json contains Node-RED NPM module and node dependencies
 COPY package.json /usr/src/node-red/
-RUN npm install
+RUN npm install --verbose
 
 # User configuration directory volume
 VOLUME /data

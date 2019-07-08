@@ -7,6 +7,7 @@ LABEL Version "1.0"
 LABEL TAG "NodeRed with git"
 LABEL Architecture "x86_64"
 
+
 #Install git to use NodeRed Projects feature
 RUN apk add --no-cache openssl
 RUN apk add --no-cache git
@@ -16,24 +17,29 @@ RUN mkdir -p /usr/src/node-red
 
 # User data directory, contains flows, config and nodes.
 RUN mkdir /data
+RUN mkdir /data/lib
+RUN mkdir /data/lib/flows
+RUN mkdir /data/lib/themes
 
 # Make Assets directory
 RUN mkdir /usr/src/app
 RUN mkdir /usr/src/app/assets
 RUN mkdir /usr/src/app/styling
 
-
 #copy assets into directory
-COPY assets/Balluff_Logo.png /usr/src/app/assets
-COPY assets/favicon.ico /usr/src/app/assets
-COPY assets/thumb_iol.jpg /usr/src/app/assets
-COPY styling/bfstyle.css /usr/src/app/styling
 
 #copy settings.js file to /data directory
 COPY config/settings.js /data
 
 #copy flow filefrom local dir to host to /data
 COPY /flows/flows.json /data
+
+#copy flows to library
+COPY lib/flows /data/lib/flows/
+COPY lib/themes /data/lib/themes/
+
+#copy theme Styling to Theme Library
+COPY lib/themes /data/lib/themes/
 
 #change the Workdir. 
 WORKDIR /usr/src/node-red

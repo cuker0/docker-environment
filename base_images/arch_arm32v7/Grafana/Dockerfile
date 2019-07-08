@@ -5,20 +5,9 @@ FROM echteler/debian:${VERSION}
 LABEL maintainer "Philipp Echteler"
 LABEL Version "1.0"
 LABEL TAG "Grafana"
-LABEL Architecture "x86"
+LABEL Architecture "arm32v7"
 
-
-RUN apt-get update && apt-get install -qq -y tar wget && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN wget -O /tmp/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.4.3.linux-armv7.tar.gz
-
-RUN mkdir /tmp/grafana && tar xfvz /tmp/grafana.tar.gz --strip-components=1 -C /tmp/grafana
-
-ARG VERSION=arm32v7
-FROM echteler/debian:${VERSION}
-
+ARG GRAFANA_URL="https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-6.2.0.linux-armv7.tar.gz"
 ARG GF_UID="472"
 ARG GF_GID="472"
 
@@ -30,30 +19,28 @@ ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
     GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
     GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
-WORKDIR $GF_PATHS_HOME
-
-RUN apt-get update && apt-get install -qq -y libfontconfig ca-certificates curl && \
+RUN apt-get update && apt-get install -qq -y tar libfontconfig curl ca-certificates && \
+    mkdir -p "$GF_PATHS_HOME/.aws" && \
+    curl "$GRAFANA_URL" | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --from=0 /tmp/grafana "$GF_PATHS_HOME"
-
-RUN mkdir -p "$GF_PATHS_HOME/.aws" && \
+    rm -rf /var/lib/apt/lists/* && \
     groupadd -r -g $GF_GID grafana && \
     useradd -r -u $GF_UID -g grafana grafana && \
     mkdir -p "$GF_PATHS_PROVISIONING/datasources" \
              "$GF_PATHS_PROVISIONING/dashboards" \
+             "$GF_PATHS_PROVISIONING/notifiers" \
              "$GF_PATHS_LOGS" \
              "$GF_PATHS_PLUGINS" \
              "$GF_PATHS_DATA" && \
     cp "$GF_PATHS_HOME/conf/sample.ini" "$GF_PATHS_CONFIG" && \
     cp "$GF_PATHS_HOME/conf/ldap.toml" /etc/grafana/ldap.toml && \
     chown -R grafana:grafana "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" && \
-    chmod 777 "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS"
+    chmod 777 "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING"
 
 EXPOSE 3000
 
 COPY ./run.sh /run.sh
 
 USER grafana
+WORKDIR /
 ENTRYPOINT [ "/run.sh" ]

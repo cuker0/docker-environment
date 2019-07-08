@@ -1,0 +1,42 @@
+version: "3"
+services:
+
+  #Influx Database
+  influxdb:
+    restart: unless-stopped
+    image: echteler/influxdb:arm32v7
+    environment:
+      INFLUXDB_DB: db1
+      INFLUXDB_HTTP_AUTH_ENABLED: "true"
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: 0815
+      INFLUXDB_USER: influx
+      INFLUXDB_USER_PASSWORD: database
+    ports:
+      - "8082:8082"
+      - "8086:8086"
+      - "8089:8089"
+    volumes:
+      - influxData:/var/lib/influxdb
+    #network_mode: "host"
+    networks: 
+      - edge
+  telegraf:
+    image: echteler/telegraf:arm32v7
+    restart: unless-stopped
+    ports:
+      - "8125:8125"
+      - "8092:8092"
+      - "8094:8094"
+    networks:
+      - edge 
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+#Create internal link network for Containers
+networks:
+  edge:
+
+#Create Volumes for persistent Storage
+volumes:
+  influxData:

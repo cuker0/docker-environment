@@ -7,7 +7,7 @@ LABEL maintainer "Philipp Echteler"
 LABEL Version "1.0"
 LABEL TAG "portainer"
 
-ENV PORTAINER_VERSION=1.19.2 \
+ENV PORTAINER_VERSION=1.20.1 \
     PORTAINER_HOME=/var/lib/portainer
 
 RUN set -ex && \
@@ -18,7 +18,7 @@ RUN set -ex && \
     #chown portainer:portainer ${PORTAINER_HOME} && \
     mkdir /opt && \
     cd /opt && \
-    wget --no-verbose https://github.com/portainer/portainer/releases/download/${PORTAINER_VERSION}/portainer-1.19.2-linux-arm.tar.gz && \
+    wget --no-verbose https://github.com/portainer/portainer/releases/download/${PORTAINER_VERSION}/portainer-1.20.1-linux-arm.tar.gz && \
     tar xvpfz portainer-${PORTAINER_VERSION}-linux-arm.tar.gz && \
     mkdir /data && \
     apk del .build-deps

@@ -10,7 +10,7 @@ RUN echo 'hosts: files dns' >> /etc/nsswitch.conf
 RUN apk add --no-cache iputils ca-certificates net-snmp-tools procps lm_sensors && \
     update-ca-certificates
 
-ENV TELEGRAF_VERSION 1.9.4
+ENV TELEGRAF_VERSION 1.11.1
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps wget gnupg tar && \
@@ -27,7 +27,7 @@ RUN set -ex && \
     wget --no-verbose  https://dl.influxdata.com/telegraf/releases/telegraf-${TELEGRAF_VERSION}_linux_armhf.tar.gz && \
     #                  https://dl.influxdata.com/telegraf/releases/telegraf-1.9.0_linux_armhf.tar.gz
     #                  https://dl.influxdata.com/chronograf/releases/telegraf-1.9.0_linux_armhf.tar.gz
-    gpg --batch --verify telegraf-${TELEGRAF_VERSION}-static_linux_armhf.tar.gz.asc telegraf-${TELEGRAF_VERSION}-static_linux_armhf.tar.gz && \
+    gpg --batch --verify telegraf-${TELEGRAF_VERSION}_linux_armhf.tar.gz.asc telegraf-${TELEGRAF_VERSION}_linux_armhf.tar.gz && \
     mkdir -p /usr/src /etc/telegraf && \
     tar -C /usr/src -xzf telegraf-${TELEGRAF_VERSION}_linux_armhf.tar.gz && \
     #mv /usr/src/telegraf*/telegraf.conf /etc/telegraf/ && \
@@ -35,6 +35,9 @@ RUN set -ex && \
     cp -a /usr/src/telegraf*/* . && \
     rm -rf *.tar.gz* /usr/src /root/.gnupg && \
     apk del .build-deps
+# User configuration directory volume
+VOLUME /etc/telegraf
+COPY config/telegraf.conf /etc/telegraf
 
 EXPOSE 8125/udp 8092/udp 8094
 

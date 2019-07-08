@@ -24,24 +24,23 @@
         }
     ],
     "dependencies": {
-        "node-red": "0.19.5",
+        "node-red": "0.20.5",
         "node-red-node-msgpack": "*",
         "node-red-node-base64": "*",
         "node-red-node-suncalc": "*",
         "node-red-node-random": "*",
         "node-red-dashboard":"*",
-        "node-red-contrib-iiot-opcua":"*",
+        "node-red-contrib-opcua":"*",
         "node-red-contrib-influxdb":"*",
         "node-red-contrib-simple-message-queue":"*",
         "node-red-contrib-s7comm":"*",
         "node-red-contrib-blockly":"*",
         "node-red-node-ping":"*",
         "node-red-contrib-telegrambot":"*",
-        "node-red-contrib-ftp":"*",
-        "node-red-contrib-smb":"*",
-        "node-red-contrib-filebrowser":"*"
+        "node-red-contrib-ftp":"*"
+
     },
     "engines": {
-        "node": ">=4"
+        "node": "8.*.*"
     }
 }

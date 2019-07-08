@@ -1,4 +1,6 @@
-#Build Container:
+
+# Build Container':'
+
 docker build -t echteler/nodered:arm32v7 --rm .
 
 #Run container
@@ -40,3 +42,10 @@ $ docker start mynodered
 
 to update nodered version: 
 edit package.json file 
+
+,
+        ,
+        "node-red-contrib-smb":"*",
+        "node-red-contrib-filebrowser":"*"
+
+

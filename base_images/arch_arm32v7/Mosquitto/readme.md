@@ -1,10 +1,11 @@
-#Build Container:
+
+# Build Container':'
+
 docker build -t echteler/mosquitto:arm32v7 --rm .
 
-#Run container
+# Run container':'
+
 docker run -d -p1883:1883 --name mosquitto echteler/mosquitto:arm32v7
-
-
 
 docker build -t mqtt:latest .
 docker run -d -p 1883:1883 -p 9001:9001 --name MQTT mqtt:latest
